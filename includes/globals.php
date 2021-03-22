@@ -3,6 +3,7 @@
 define('PROGNAME', 'tarot');
 define('VERSION', '0.0.1');
 define('AUTHORS', 'Jörn Nettingsmeier [nettings@luchtbeweging.nl]');
+define('PROJECT_HOME', 'https://github.com/nettings/tarot');
 define('ROOT', realpath(__DIR__ . '/../'));
 define('DOCROOT', @dirname($_SERVER['REQUEST_URI']));
 define('HOST', gethostname());

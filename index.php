@@ -7,69 +7,85 @@ require(INC . '/card_devices.php');
 require(INC . '/images.php');
 require(INC . '/write_cmd.php');
 
-include(HTM . '/header.php');
-//include(HTM . '/content.php');
-
-
 //$size = 12 * (2 ** 30);
 $writers = get_card_devices($size);
 //print_r($devices);
-//print_r($sd_writers);
+//print_r($writers);
 $images = get_images();
-//print_r($images);
-//print(make_write_cmd($images[0], $sd_writers));
+$cmd = make_write_cmd($images[0], $writers);
+
+include(HTM . '/header.php');
 ?>
   <div class="one-third column">
     <h3>Image files</h3>
     <form>
       <fieldset>
         <legend>Choose an image file to duplicate:</legend>
+        <table>
+          <tr>
+            <th> </th>
+            <th>Image file</th>
+            <th>File size</th>
+          </tr>
 <?php
-    foreach($images as $img) {
+    foreach($images as $n => $img) {
         $i = $img['name'];
         $s = sprintf('%1.3f', ($img['size'] * B2GIB));
 ?>
-        <input type="radio" name="image" value="<?=$i?>" />
-        <?=$i?> (<?=$s?> GiB)
-        <br />
+          <tr>
+            <td><input type="radio" name="image" value="<?=$n?>" /></td>
+            <td><?=$i?></td>
+            <td><?=$s?> GiB</td>
+          </tr>
 <?php
     }
 ?>
+        </table>
       </fieldset>
     </form>
   </div>
-  <div class="one-third-column">
+  <div class="one-third column">
     <h3>Writer devices</h3>
     <form>
       <fieldset>
         <legend>Select writer devices to use:</legend>
         <table>
           <tr>
-            <th><input type="checkbox" name="allwriters" id="allwriters" /> all</th>
+            <th><input type="checkbox" id="selectAllWriters" /> all</th>
             <th>Device</th>
             <th>Media size</th>
             <th>Status</th>
           </tr>
 <?php
-    foreach($writers as $writer) {
+    foreach($writers as $n => $writer) {
         $w = $writer['path'];
         $s = sprintf('%1.3f', ($writer['size'] *B2GIB));
 ?>
           <tr>
             <td>
-              <input type="checkbox" name="<?=$w?>" value="<?=$w?>" />
+              <input type="checkbox" name="<?=$w?>" value="<?=$n?>" />
             </td>
             <td><?=$w?></td>
             <td><?=$s?> GiB</td>
             <td>unknown</td>
           </tr>
-            
 <?php
     }
 ?>  
         </table>
       </fieldset>      
     </form>
+  </div>
+  <div class="one-third column">
+    <h3>Actions</h3>
+    <form>
+      <fieldset>
+         <input type="button" name="write" id="write" disabled="disabled" value="Write !" /><br />
+         <input type="button" name="parttable" id="parttable" value="Re-read partition table (slow)" /><br />
+      </fieldset>
+    </form>
+    <h4>Current command:</h4>
+    <pre><code><?=$cmd?></code></pre>
   </div>
 <?php 
 include(HTM . '/footer.php');

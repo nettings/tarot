@@ -9,3 +9,35 @@ fieldset table input {
 fieldset table td {
     border: none;
 }
+
+div.header {
+    text-align: center;
+    background-color: #fdfdfd;
+    width: 100%;
+}
+
+div.footer {
+    font-size: 90%;
+    line-height: 90%;
+}
+
+h1 {
+    font-weight: 800;
+    margin-bottom: 0;
+    letter-spacing: 0.6ex;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 100%;
+    word-spacing: -30%;
+    position: relative;
+    
+    top: -1ex;
+}
+
+input[type=button] {
+    width: 100%;
+    background-color: #fdfdfd;
+}
+

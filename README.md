@@ -21,3 +21,4 @@ tarot has been inspired by [Aaron Nguyen's
 osid-python3](https://github.com/aaronnguyen/osid-python3), which in turn
 draws on earlier work by [Rock &
 Scissor](https://github.com/rockandscissor/osid).
+The web gui uses [Skeleton](https://getskeleton.com).

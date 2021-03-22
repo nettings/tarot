@@ -3,12 +3,15 @@
 require_once(__DIR__ . '/globals.php');
 
 function make_dcfldd_cmd($image, $devices) {
-	$cmd = WRITE_CMD . ' bs=4M';
-	$cmd .= ' if=' . escapeshellarg($image);	
+	$masked_newline = " \\\n";
+	$cmd = WRITE_CMD . $masked_newline;
+	$cmd .= '    bs=4M ' . $masked_newline;
+	$cmd .= '    if=' . escapeshellarg($image) . $masked_newline;	
 	foreach($devices as $dev) {
-		$cmd .= ' of=' . escapeshellarg($dev['path']);
+		$cmd .= '    of=' . escapeshellarg($dev['path']) . $masked_newline;
 	}
-	$cmd .= ' sizeprobe=if statusinterval=4';
+	$cmd .= '    sizeprobe=if' .$masked_newline;
+	$cmd .= '    statusinterval=4';
 	return $cmd;
 }
 
