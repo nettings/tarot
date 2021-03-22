@@ -1,0 +1,11 @@
+fieldset table th,td {
+    padding: 0 1em 1ex 0;
+}
+
+fieldset table input {
+    margin: 0;
+}
+
+fieldset table td {
+    border: none;
+}
