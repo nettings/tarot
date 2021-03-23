@@ -50,39 +50,86 @@ function pick_block_devices($device_list, &$disks, &$partitions) {
  *   <li>It does not have the read-only flag set.</li>
  *   <li>It is not mounted.</li>
  *   <li>None of its partitions are mounted.</li>
- *   <li>Its size is greater than $size.</li>
+ *   <li>Its size is not less than $size.</li>
  * </ul>
  *
  * @param size 		The minimum size of a device in bytes.
  * @returns		An associative array of card devices, the 
  *                      format of which is determined by LSBLKCMD.
  */ 
-function get_card_devices($size) {
+function get_card_devices($size = 0) {
 	$disks = array();
 	$partitions = array();
 	$carddevs = array();
 	$device_list = get_block_devices();
 	pick_block_devices($device_list, $disks, $partitions);
-	foreach($disks as $disk){
-		if ($disk['mountpoint']) continue;
-		if ($disk['hotplug'] != 1) continue;
-		if ($disk['size'] < $size) continue;
-		if ($disk['ro']) continue;
-		$used = false;
-		foreach ($partitions as $partition) {
-			// we recognize partitions of a device by common prefix
-			$len = strlen($disk['path']);
-			if (substr($partition['path'], 0, $len) == $disk['path'] 
-				&& $partition['mountpoint']
-			) { 
-				$used = true;
-			}
+	foreach($disks as $d){
+		if ($d['mountpoint']) continue;
+		if ($d['hotplug'] != 1) continue;
+		foreach ($partitions as $p) {
+			// If any partition is mounted, skip the
+			// entire device.
+			// We recognize partitions of a device
+			// by common prefix.
+			$len = strlen($d['path']);
+			if (substr($p['path'], 0, $len) == $d['path']
+				&& $p['mountpoint']) continue 2; // skip outer!
 		}
-		if (!$used) {
-			$carddevs[] = $disk;
-		}
+		$d['status'] = 'ok';
+		if ($d['size'] < $size)
+			$d['status'] = 'overflow';
+		if ($d['ro'])
+			$d['status'] = 'read-only';
+		$carddevs[] = $d;
 	}
 	return $carddevs;
 }
 
+
+function store($data, $location) {
+	$fp = fopen($location, 'w');
+	if (!$fp) {
+		error_log("Error opening $location for writing in "
+			. __FILE__ . " on line " . __LINE__);
+		return $fp;
+	}
+	$res = fwrite($fp, serialize($data));
+	if (!$res) {
+		error_log("Error writing to $location in "
+			.__FILE__ . " on line " . __LINE__);
+		return $res;
+	}
+	$res = fclose($fp);
+	if (!$res) {
+		error_log("Error closing $location in "
+		. __FILE__ . " on line " . __LINE__);
+	}
+	return $res;
+}
+
+function restore($location) {
+	$fp = fopen($location, 'r');
+	if (!$fp) {
+                error_log("Error opening $location for reading in "
+			. __FILE__ . " on line " . __LINE__);
+                return $fp;
+        }
+	$data = fread($fp, 32767);
+	if (!$data) {
+		error_log("Error reading from $location in "
+			. __FILE__ . " on line " .__LINE__);
+		return $data;
+	}
+	return unserialize($data);
+}
+
+function older_than_secs($location, $seconds) {
+	$mtime = filemtime($location);
+	if (!$mtime) {
+		error_log("Error reading modification time of $location in"
+			. __FILE__ . " on line " . __LINE__);
+		return $mtime;
+	}
+	return ((time() - $mtime) > $seconds);
+}
 ?>

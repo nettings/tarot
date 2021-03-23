@@ -8,11 +8,20 @@ require(INC . '/images.php');
 require(INC . '/write_cmd.php');
 
 //$size = 12 * (2 ** 30);
-$writers = get_card_devices($size);
+
+if (older_than_secs(CARDDEV_LIST, 60) || !empty($_POST['scan'])) {
+    $writers = get_card_devices();
+    store($writers, CARDDEV_LIST);
+} else {
+    $writers = restore(CARDDEV_LIST);
+}
+
+$images = get_images();
+$cmd = make_write_cmd($images[0]['name'], $writers);
+
 //print_r($devices);
 //print_r($writers);
-$images = get_images();
-$cmd = make_write_cmd($images[0], $writers);
+
 
 include(HTM . '/header.php');
 ?>
@@ -30,7 +39,7 @@ include(HTM . '/header.php');
 <?php
     foreach($images as $n => $img) {
         $i = $img['name'];
-        $s = sprintf('%1.3f', ($img['size'] * B2GIB));
+        $s = sprintf('%1.3f', ((float)$img['size'] * B2GIB));
 ?>
           <tr>
             <td><input type="radio" name="image" value="<?=$n?>" /></td>
@@ -59,28 +68,38 @@ include(HTM . '/header.php');
 <?php
     foreach($writers as $n => $writer) {
         $w = $writer['path'];
-        $s = sprintf('%1.3f', ($writer['size'] *B2GIB));
+        $s = sprintf('%1.3f', ((float)$writer['size'] *B2GIB));
+        $x = $writer['status'] | 'ok';
 ?>
           <tr>
             <td>
-              <input type="checkbox" name="<?=$w?>" value="<?=$n?>" />
+              <input type="checkbox" name="writer" value="<?=$n?>" />
             </td>
             <td><?=$w?></td>
             <td><?=$s?> GiB</td>
-            <td>unknown</td>
+            <td><?=$x?></td>
           </tr>
 <?php
     }
-?>  
+?>
         </table>
       </fieldset>      
+    </form>
+<?php
+    $scan_button = ($writers) ? 'Rescan' : 'Scan';
+    $scan_button .= ' for writers';
+?>
+    <form method="post">
+      <fieldset>
+        <input type="submit" name="scan" value="<?=$scan_button?>" />
+      </fieldset>
     </form>
   </div>
   <div class="one-third column">
     <h3>Actions</h3>
     <form>
       <fieldset>
-         <input type="button" name="write" id="write" disabled="disabled" value="Write !" /><br />
+         <input type="button" name="write" disabled="disabled" value="Write !" /><br />
          <input type="button" name="parttable" id="parttable" value="Re-read partition table (slow)" /><br />
       </fieldset>
     </form>
@@ -89,4 +108,3 @@ include(HTM . '/header.php');
   </div>
 <?php 
 include(HTM . '/footer.php');
-?>
