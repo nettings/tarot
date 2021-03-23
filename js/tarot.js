@@ -16,6 +16,6 @@ function handleSelectAllwriters(event) {
     var t = event.target;
     var s = t.form.getElementsByTagName('input');
     for (var i of s) {
-        if (i.type == 'checkbox') i.checked = t.checked;
+        if (i.type == 'checkbox' && i.disabled != true) i.checked = t.checked;
     }
 }

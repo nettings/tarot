@@ -1,15 +1,3 @@
-fieldset table th,td {
-    padding: 0 1em 1ex 0;
-}
-
-fieldset table input {
-    margin: 0;
-}
-
-fieldset table td {
-    border: none;
-}
-
 div.header {
     text-align: center;
     background-color: #fdfdfd;
@@ -36,8 +24,36 @@ h2 {
     top: -1ex;
 }
 
-input[type=button] {
+fieldset table th,td {
+    padding: 0 1em 1ex 0;
+}
+
+fieldset table input {
+    margin: 0;
+}
+
+fieldset table td {
+    border: none;
+}
+
+input[type=button],input[type=submit] {
     width: 100%;
     background-color: #fdfdfd;
 }
 
+input[type=checkbox][disabled] {
+    opacity: .4;
+}
+
+tr.overflow,tr.ro td {
+    color: #800;
+}
+
+tr.mounted td {
+    color: #f00;
+    font-weight: 800;
+}
+
+tr.ok td {
+    color: #080;
+}

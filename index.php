@@ -10,7 +10,7 @@ require(INC . '/write_cmd.php');
 //$size = 12 * (2 ** 30);
 
 if (older_than_secs(CARDDEV_LIST, 60) || !empty($_POST['scan'])) {
-    $writers = get_card_devices();
+    $writers = get_card_devices(16* (2**30));
     store($writers, CARDDEV_LIST);
 } else {
     $writers = restore(CARDDEV_LIST);
@@ -69,11 +69,12 @@ include(HTM . '/header.php');
     foreach($writers as $n => $writer) {
         $w = $writer['path'];
         $s = sprintf('%1.3f', ((float)$writer['size'] *B2GIB));
-        $x = $writer['status'] | 'ok';
+        $x = ($writer['size'] >= 16*(2**30)) ? $writer['status'] : 'overflow';
+        $d = ($x != 'ok') ? 'disabled="disabled"' : '';
 ?>
-          <tr>
+          <tr class="<?=$x?>">
             <td>
-              <input type="checkbox" name="writer" value="<?=$n?>" />
+              <input type="checkbox" name="writer" value="<?=$n?>" <?=$d?> />
             </td>
             <td><?=$w?></td>
             <td><?=$s?> GiB</td>

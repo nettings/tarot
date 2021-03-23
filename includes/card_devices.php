@@ -50,36 +50,33 @@ function pick_block_devices($device_list, &$disks, &$partitions) {
  *   <li>It does not have the read-only flag set.</li>
  *   <li>It is not mounted.</li>
  *   <li>None of its partitions are mounted.</li>
- *   <li>Its size is not less than $size.</li>
  * </ul>
  *
- * @param size 		The minimum size of a device in bytes.
- * @returns		An associative array of card devices, the 
- *                      format of which is determined by LSBLKCMD.
+ * @returns		An associative array of card devices.
  */ 
-function get_card_devices($size = 0) {
+function get_card_devices() {
 	$disks = array();
 	$partitions = array();
 	$carddevs = array();
 	$device_list = get_block_devices();
 	pick_block_devices($device_list, $disks, $partitions);
 	foreach($disks as $d){
-		if ($d['mountpoint']) continue;
+		$d['status'] = 'ok';
 		if ($d['hotplug'] != 1) continue;
-		foreach ($partitions as $p) {
+		if ($d['mountpoint']) {
+			$d['status'] = 'mounted';
+		} else foreach ($partitions as $p) {
 			// If any partition is mounted, skip the
 			// entire device.
 			// We recognize partitions of a device
 			// by common prefix.
 			$len = strlen($d['path']);
 			if (substr($p['path'], 0, $len) == $d['path']
-				&& $p['mountpoint']) continue 2; // skip outer!
+				&& $p['mountpoint']) {
+				$d['status'] = 'mounted';
+			}
 		}
-		$d['status'] = 'ok';
-		if ($d['size'] < $size)
-			$d['status'] = 'overflow';
-		if ($d['ro'])
-			$d['status'] = 'read-only';
+		if ($d['ro']) $d['status'] = 'read-only';
 		$carddevs[] = $d;
 	}
 	return $carddevs;
