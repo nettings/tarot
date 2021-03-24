@@ -6,28 +6,27 @@ require_once(INC . '/globals.php');
 require(INC . '/card_devices.php');
 require(INC . '/images.php');
 require(INC . '/write_cmd.php');
+require(INC . '/tarot_state.php');
 
-//$size = 12 * (2 ** 30);
 
-if (older_than_secs(CARDDEV_LIST, 60) || !empty($_POST['scan'])) {
-    $writers = get_card_devices(16* (2**30));
-    store($writers, CARDDEV_LIST);
-} else {
-    $writers = restore(CARDDEV_LIST);
-}
+$state = tarot_state::restore(STATEFILE);
+if (!$state) $state = new tarot_state();
 
-$images = get_images();
-$cmd = make_write_cmd($images[0]['name'], $writers);
 
-//print_r($devices);
-//print_r($writers);
+$state->set_caller_ip($_SERVER['REMOTE_ADDR']);
+$state->set_image_list(get_images());
+$state->set_device_list(get_card_devices());
+
+$state->store(STATEFILE);
+
+//var_dump($state);
 
 
 include(HTM . '/header.php');
 ?>
   <div class="one-third column">
     <h3>Image files</h3>
-    <form>
+    <form id="image">
       <fieldset>
         <legend>Choose an image file to duplicate:</legend>
         <table>
@@ -37,7 +36,7 @@ include(HTM . '/header.php');
             <th>File size</th>
           </tr>
 <?php
-    foreach($images as $n => $img) {
+    foreach($state->get_image_list() as $n => $img) {
         $i = $img['name'];
         $s = sprintf('%1.3f', ((float)$img['size'] * B2GIB));
 ?>
@@ -51,11 +50,14 @@ include(HTM . '/header.php');
 ?>
         </table>
       </fieldset>
+      <fieldset>
+        <input type="submit" name="scan" value="Rescan for images" />
+      </fieldset>  
     </form>
   </div>
   <div class="one-third column">
     <h3>Writer devices</h3>
-    <form>
+    <form id="writers">
       <fieldset>
         <legend>Select writer devices to use:</legend>
         <table>
@@ -66,7 +68,7 @@ include(HTM . '/header.php');
             <th>Status</th>
           </tr>
 <?php
-    foreach($writers as $n => $writer) {
+    foreach($state->get_device_list() as $n => $writer) {
         $w = $writer['path'];
         $s = sprintf('%1.3f', ((float)$writer['size'] *B2GIB));
         $x = ($writer['size'] >= 16*(2**30)) ? $writer['status'] : 'overflow';
@@ -85,20 +87,14 @@ include(HTM . '/header.php');
 ?>
         </table>
       </fieldset>      
-    </form>
-<?php
-    $scan_button = ($writers) ? 'Rescan' : 'Scan';
-    $scan_button .= ' for writers';
-?>
-    <form method="post">
       <fieldset>
-        <input type="submit" name="scan" value="<?=$scan_button?>" />
+        <input type="submit" name="scan" value="Rescan for writers" />
       </fieldset>
     </form>
   </div>
   <div class="one-third column">
     <h3>Actions</h3>
-    <form>
+    <form id="actions">
       <fieldset>
          <input type="button" name="write" disabled="disabled" value="Write !" /><br />
          <input type="button" name="parttable" id="parttable" value="Re-read partition table (slow)" /><br />

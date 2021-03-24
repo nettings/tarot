@@ -22,7 +22,7 @@ define('BLOCKDEVICES', 'blockdevices'); // json subtree element we're interested
 define('STATCMD', "/usr/bin/stat -c '%s'");
 define('IMAGE_PATH', '/local/images');
 define('IMAGE_FILE_SUFFIX', '\.img'); // escape for preg_match!
-define('CARDDEV_LIST', IMAGE_PATH . '/tarot_devices.txt');
+define('STATEFILE', IMAGE_PATH . '/tarot_state.txt');
 define('WRITE_CMD', '/usr/bin/dcfldd');
 
 define('B2GIB', 1.0 / (2.0 ** 30.0));
