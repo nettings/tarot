@@ -87,6 +87,7 @@ class tarot_state {
 		$this->device_list = $device_list;
 		$this->unselect_all_devices();
 		$this->devices_last_changed = $this->update();
+		if ($this->image_selected > -1) $this->update_device_status();
 	}
 	public function get_device_list() { return $this->device_list; }
 	public function device_is_selected($index) {

@@ -9,6 +9,7 @@ div.header img {
 }
 
 div.footer {
+    margin-top: 3em;
     font-size: 90%;
     line-height: 90%;
 }
@@ -32,9 +33,13 @@ fieldset table td {
     border: none;
 }
 
-input[type=button],input[type=submit] {
+input[type=submit] {
     width: 100%;
     background-color: #fdfdfd;
+}
+
+input[name=write],input[name=confwrt],input[name=steal] {
+    background-color: #cdcdfd;
 }
 
 input[type=checkbox][disabled] {

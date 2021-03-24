@@ -11,7 +11,6 @@ require(INC . '/tarot_state.php');
 $caller_ip = $_SERVER['REMOTE_ADDR'];
 $form_data = $_POST;
 $state = null;
-$ready = false;
 
 
 // Restore state unless user asks to forget the session
@@ -27,12 +26,23 @@ if (!$state) {
         error_log('Restored old tarot_state.');
 }
 
-// Check if the IP is the same that created the session
-// (this web GUI must be a singleton!)
-if ($caller_ip != $state->get_caller_ip()) {
+
+// This web GUI must be a singleton!
+// Check if caller IP is the same as in the session.
+// If not, ask to steal session explicitly.
+if ($state->get_caller_ip()
+        && $state->get_caller_ip() != $caller_ip
+        && !array_key_exists('steal', $form_data)) {
 //fixme: ask before stealing session!
-        $state->set_caller_ip($_SERVER['REMOTE_ADDR']);
+//        $state->set_caller_ip($_SERVER['REMOTE_ADDR']);
+        include(HTM . '/header.php');
+        include(HTM . '/steal.php');
+        include(HTM . '/footer.php');
+        exit;
+} else {
+        $state->set_caller_ip($caller_ip);
 }
+
 
 // Scan for images if requested, otherwise update image
 // selection if it has changed.
@@ -59,10 +69,7 @@ if (array_key_exists('scanwrt', $form_data)) {
 $cmd = make_write_cmd($state);
 $state->store(STATEFILE);
 
-
-
 include(HTM . '/header.php');
-
 // Perform write if requested, show config screen otherwise
 if (array_key_exists('write', $form_data)) {
         include(HTM . '/write.php');

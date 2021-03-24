@@ -1,3 +1,4 @@
+<div class="row">
   <form method="post">
     <div class="one-third column">
       <h3>Image files</h3>
@@ -98,3 +99,4 @@ foreach($state->get_device_list() as $n => $writer) {
       <pre><code><?=$state->get_caller_ip()?></code></pre>
     </div>
   </form>
+</div>

@@ -1,4 +1,3 @@
-  </div>
   <div class="row">
     <div class="twelve columns footer">
       <?=PROGNAME . ' v' . VERSION . ' running on ' . HOST?><br />

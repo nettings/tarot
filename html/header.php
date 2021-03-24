@@ -20,4 +20,3 @@
     <h1><img src="<?=DOCROOT?>/graphics/tarot.svg" alt="tarot" title="tarot" /> helps you deal with decks of cards</h1>
   </div>
 <div class="container">
-  <div class="row">
