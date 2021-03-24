@@ -14,11 +14,18 @@ function domReady() {
         false
     );
     // "select all" checkbox for writer selection
-    document.getElementById('selectAllWriters').addEventListener(
-        'click',
+    document.getElementById('allwrt').addEventListener(
+        'change',
         function() { handleSelectAllwriters(event); },
         false
     );
+    /* checkboxes for writer selection
+    document.getElementById('writers').addEventListener(
+        'change',
+        function() { handleSelectWriter(event); },
+        false
+    );
+    */
 }
 
 
@@ -34,3 +41,4 @@ function handleSelectAllwriters(event) {
 function handleSelectImage(event) {
     event.target.form.submit();
 }
+

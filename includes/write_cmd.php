@@ -2,13 +2,17 @@
 
 require_once(__DIR__ . '/globals.php');
 
-function make_dcfldd_cmd($image, $devices) {
+function make_dcfldd_cmd($state) {
+	$img = $state->get_image_list()[$state->get_selected_image()]['name'];
+	$devices = $state->get_device_list();
 	$masked_newline = " \\\n";
 	$cmd = WRITE_CMD . $masked_newline;
 	$cmd .= '    bs=4M ' . $masked_newline;
-	$cmd .= '    if=' . escapeshellarg($image) . $masked_newline;	
-	foreach($devices as $dev) {
-		$cmd .= '    of=' . escapeshellarg($dev['path']) . $masked_newline;
+	$cmd .= '    if=' . escapeshellarg($img) . $masked_newline;
+	foreach($devices as $n => $dev) {
+		if ($state->device_is_selected($n)) {
+			$cmd .= '    of=' . escapeshellarg($dev['path']) . $masked_newline;
+		}
 	}
 	$cmd .= '    sizeprobe=if' .$masked_newline;
 	$cmd .= '    statusinterval=4';
@@ -27,14 +31,16 @@ function make_dcfldd_cmd($image, $devices) {
 /**
  * construct a command to write images to list of devices
  *
- * @param image		the file name of the image (assumed to be in
- *			IMAGE_PATH.
- * @param devices	an array of devices of the form determined by
- *			get_block_devices()
+ * @param state		a tarot_state object
+ *
  * @returns		a shell command string
  */
-function make_write_cmd($image, $devices) {
-	return make_dcfldd_cmd($image, $devices);
+function make_write_cmd($state) {
+	if ($state->is_ready()) {
+		return make_dcfldd_cmd($state);
+	} else {
+		return '';
+	}
 }
 
 ?>

@@ -8,100 +8,69 @@ require(INC . '/images.php');
 require(INC . '/write_cmd.php');
 require(INC . '/tarot_state.php');
 
+$caller_ip = $_SERVER['REMOTE_ADDR'];
+$form_data = $_POST;
+$state = null;
+$ready = false;
 
-$state = tarot_state::restore(STATEFILE);
-if (!$state) $state = new tarot_state();
 
+// Restore state unless user asks to forget the session
+if (!array_key_exists('reset', $form_data)) {
+        $state = tarot_state::restore(STATEFILE);
+}
 
-$state->set_caller_ip($_SERVER['REMOTE_ADDR']);
-$state->set_image_list(get_images());
-$state->set_device_list(get_card_devices());
+// If there is no state yet, create a fresh one.
+if (!$state) {
+        $state = new tarot_state();
+        error_log('Created new tarot_state.');
+} else {
+        error_log('Restored old tarot_state.');
+}
 
+// Check if the IP is the same that created the session
+// (this web GUI must be a singleton!)
+if ($caller_ip != $state->get_caller_ip()) {
+//fixme: ask before stealing session!
+        $state->set_caller_ip($_SERVER['REMOTE_ADDR']);
+}
+
+// Scan for images if requested, otherwise update image
+// selection if it has changed.
+if (array_key_exists('scanimg', $form_data)) {
+        $state->set_image_list(get_images());
+} else if (array_key_exists('image', $form_data)) {
+        $state->select_image($form_data['image']);
+}
+
+// Scan for card writers if requested, otherwise update
+// device selection if it has changed.
+if (array_key_exists('scanwrt', $form_data)) {
+        $state->set_device_list(get_card_devices());
+} else {
+        foreach($state->get_device_list() as $n => $writer) {
+                if (array_key_exists('writer_' . $n, $form_data)) {
+                        $state->select_device($n);
+                } else {
+                        $state->unselect_device($n);
+                }
+        }
+}
+
+$cmd = make_write_cmd($state);
 $state->store(STATEFILE);
 
-//var_dump($state);
 
 
 include(HTM . '/header.php');
-?>
-  <div class="one-third column">
-    <h3>Image files</h3>
-    <form id="image">
-      <fieldset>
-        <legend>Choose an image file to duplicate:</legend>
-        <table>
-          <tr>
-            <th> </th>
-            <th>Image file</th>
-            <th>File size</th>
-          </tr>
-<?php
-    foreach($state->get_image_list() as $n => $img) {
-        $i = $img['name'];
-        $s = sprintf('%1.3f', ((float)$img['size'] * B2GIB));
-?>
-          <tr>
-            <td><input type="radio" name="image" value="<?=$n?>" /></td>
-            <td><?=$i?></td>
-            <td><?=$s?> GiB</td>
-          </tr>
-<?php
-    }
-?>
-        </table>
-      </fieldset>
-      <fieldset>
-        <input type="submit" name="scan" value="Rescan for images" />
-      </fieldset>  
-    </form>
-  </div>
-  <div class="one-third column">
-    <h3>Writer devices</h3>
-    <form id="writers">
-      <fieldset>
-        <legend>Select writer devices to use:</legend>
-        <table>
-          <tr>
-            <th><input type="checkbox" id="selectAllWriters" /> all</th>
-            <th>Device</th>
-            <th>Media size</th>
-            <th>Status</th>
-          </tr>
-<?php
-    foreach($state->get_device_list() as $n => $writer) {
-        $w = $writer['path'];
-        $s = sprintf('%1.3f', ((float)$writer['size'] *B2GIB));
-        $x = ($writer['size'] >= 16*(2**30)) ? $writer['status'] : 'overflow';
-        $d = ($x != 'ok') ? 'disabled="disabled"' : '';
-?>
-          <tr class="<?=$x?>">
-            <td>
-              <input type="checkbox" name="writer" value="<?=$n?>" <?=$d?> />
-            </td>
-            <td><?=$w?></td>
-            <td><?=$s?> GiB</td>
-            <td><?=$x?></td>
-          </tr>
-<?php
-    }
-?>
-        </table>
-      </fieldset>      
-      <fieldset>
-        <input type="submit" name="scan" value="Rescan for writers" />
-      </fieldset>
-    </form>
-  </div>
-  <div class="one-third column">
-    <h3>Actions</h3>
-    <form id="actions">
-      <fieldset>
-         <input type="button" name="write" disabled="disabled" value="Write !" /><br />
-         <input type="button" name="parttable" id="parttable" value="Re-read partition table (slow)" /><br />
-      </fieldset>
-    </form>
-    <h4>Current command:</h4>
-    <pre><code><?=$cmd?></code></pre>
-  </div>
-<?php 
+
+// Perform write if requested, show config screen otherwise
+if (array_key_exists('write', $form_data)) {
+        include(HTM . '/write.php');
+} else {
+        include(HTM . '/config.php');
+}
 include(HTM . '/footer.php');
+
+
+
+?>
