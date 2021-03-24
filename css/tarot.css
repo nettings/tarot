@@ -4,24 +4,19 @@ div.header {
     width: 100%;
 }
 
+div.header img {
+}
+
 div.footer {
     font-size: 90%;
     line-height: 90%;
 }
 
 h1 {
-    font-weight: 800;
-    margin-bottom: 0;
-    letter-spacing: 0.6ex;
-}
-
-h2 {
+    font-size:250%;
     font-weight: 400;
-    font-size: 100%;
-    word-spacing: -30%;
-    position: relative;
-    
-    top: -1ex;
+    padding-bottom: 0.5ex;
+    letter-spacing: -0.1ex;
 }
 
 fieldset table th,td {
@@ -50,10 +45,8 @@ tr.overflow,tr.ro td {
 }
 
 tr.mounted td {
-    color: #f00;
-    font-weight: 800;
+    text-decoration: line-through;
 }
 
 tr.ok td {
-    color: #080;
 }

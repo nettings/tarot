@@ -12,13 +12,12 @@
   <link rel="stylesheet" href="<?=DOCROOT?>/skeleton/css/normalize.css" />
   <link rel="stylesheet" href="<?=DOCROOT?>/skeleton/css/skeleton.css" />
   <link rel="stylesheet" href="<?=DOCROOT?>/css/tarot.css" />
-  <link rel="icon" href="<?=DOCROOT?>/graphics/tarot.ico" type="image/x-icon" />
+  <link rel="icon" href="<?=DOCROOT?>/graphics/tarot.svg" type="image/svg+xml" sizes="any" />
   <script src="<?=DOCROOT?>/js/tarot.js" type="text/javascript"> </script>
 </head>
 <body>
   <div class="header">
-    <h1><?=PROGNAME?></h1>
-    <h2>helps you deal with decks of cards</h2>
+    <h1><img src="<?=DOCROOT?>/graphics/tarot.svg" alt="tarot" title="tarot" /> helps you deal with decks of cards</h1>
   </div>
 <div class="container">
   <div class="row">
