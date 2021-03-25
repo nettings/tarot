@@ -11,9 +11,9 @@
       Your current address is <code><?=$caller_ip?></code>.
     </p>
     <p>
-      Since it depends on hardware resources, only one person can use <?=PROGNAME?> at the same time.<br />
-      If you know that nobody else is currently working with <?=PROGNAME?>, you can
-      <strong>steal the currently running session</strong>.
+      Since <?=PROGNAME?> depends on hardware resources, only one person can use an instance at the same time.<br />
+      If you know that nobody else is currently working with this <?=PROGNAME?> installation, you can
+      <strong>steal the running session</strong>.
     </p>
   </div>
   <div class="one-third column">

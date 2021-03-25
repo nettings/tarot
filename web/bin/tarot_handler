@@ -1,0 +1,28 @@
+#!/usr/bin/php
+<?php 
+require(__DIR__ . '/../includes/globals.php');
+require(__DIR__ . '/../includes/tarot_state.php');
+require(__DIR__ . '/../includes/write_cmd.php');
+
+$cmd = '';
+$out = array();
+$retval = -42;
+
+if (posix_getuid() != 0) {
+	fwrite(STDERR, "Fatal error: " . __FILE__ . " must be run as root.\n");
+	exit(2);
+}
+
+$state = tarot_state::restore(STATE_FILE);
+if (!$state) {
+	fwrite(STDERR, "No tarot_state found at " . STATE_FILE . ".\n");
+	fwrite(STDERR, "Please run web interface first!\n");
+	exit(3);
+}
+
+$cmd = make_write_cmd($state);
+$cmd .= ' 2>&1  | cat > ' . PROGRESS_FILE;
+print("Executing\n\n $cmd\n\n\n");
+exec($cmd, $out, $retval);
+
+?>

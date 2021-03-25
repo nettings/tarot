@@ -34,11 +34,16 @@ class tarot_state {
 			$imgsize = 0.0;
 		}
 		foreach ($this->device_list as $k => $v) {
+			// error_log("dev: ".$v['path']."  status: ".$v['status']);
+			// error_log("size: $devsize   imgsize: $imgsize");
 			$devsize = (float) $v['size'];
-			if ($v['status'] == 'ok' && $devsize < $imgsize)
+			if (($v['status'] == 'ok') && ($devsize < $imgsize)) {
 				$this->device_list[$k]['status'] = 'overflow';
-			if ($v['status'] == 'overflow' && $devsize >= $imgsize)
+				$this->unselect_device($k);
+			}
+			if (($v['status'] == 'overflow') && ($devsize >= $imgsize)) {
 				$this->device_list[$k]['status'] = 'ok';
+			}
 		}
 	}
 
@@ -92,25 +97,28 @@ class tarot_state {
 	}
 
 	public function device_is_selected($index) {
-		return ($this->devices_selected[(int) $index] === true);
+		return (@$this->devices_selected[(int) $index] === true);
 	}
 	public function select_device($index) {
-		if (array_key_exists($index, $this->device_list)) {
+		$status = $this->device_list[$index]['status'];
+		if (array_key_exists($index, $this->device_list) && $status == 'ok') {
 			$this->devices_selected[(int) $index] = true;
-			return true;
-		} else 	return false;
+		} else {
+			error_log("Error: cannot select device no. $index with
+				status " . $status . " in " . __FILE__ . 
+				" on line " . __LINE__);
+		}
 	}
 	public function unselect_device($index) {
 		if (array_key_exists($index, $this->device_list)) {
 			$this->devices_selected[(int) $index] = false;
-			return true;
-		} else return false;
+		} else {
+			error_log("Error: cannot unselect device no. $index in "
+			. __FILE__ . " on line " . __LINE__);
+		}
 	}
 	public function unselect_all_devices() {
 		$this->devices_selected = array();
-		foreach ($this->device_list as $k => $v) {
-			$this->devices_selected[$k] = false;
-		}
 	}
 
 	public function store($location) {

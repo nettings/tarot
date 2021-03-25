@@ -54,7 +54,7 @@ function pick_block_devices($device_list, &$disks, &$partitions) {
  *
  * @returns		An associative array of card devices.
  */ 
-function get_card_devices() {
+function get_card_devices($debug) {
 	$disks = array();
 	$partitions = array();
 	$carddevs = array();
@@ -77,6 +77,13 @@ function get_card_devices() {
 			}
 		}
 		if ($d['ro']) $d['status'] = 'read-only';
+		$carddevs[] = $d;
+	}
+	if ($debug) {
+		unset($d);
+		$d['status'] = 'ok';
+		$d['path'] = '/dev/null';
+		$d['size'] = '137438953472';
 		$carddevs[] = $d;
 	}
 	return $carddevs;

@@ -15,6 +15,10 @@ $state = null;
 $lastmod = 0;
 $cmd = '';
 
+$debug = array_key_exists('debug', $_GET)
+        || array_key_exists('DEBUG', $_GET)
+        || array_key_exists('Debug', $_GET);
+        
 // Restore state unless user requests to forget or steal the session
 if (!(array_key_exists('reset', $form_data)
         || array_key_exists('steal', $form_data))) {
@@ -27,8 +31,14 @@ if (!$state) {
         $state->set_caller_ip($caller_ip);
         error_log('Created new tarot_state.');
 } else {
-        error_log('Restored old tarot_state.');
+        error_log('Using existing tarot_state.');
 }
+
+// Developer wants to test session stealing code
+if ($debug && array_key_exists('fudgeip', $form_data)) {
+        $state->set_caller_ip('0.0.0.0');
+}
+
 
 // This web GUI must be a singleton!
 // Check if caller IP is the same that created the session.
@@ -54,12 +64,14 @@ if (array_key_exists('scanimg', $form_data)) {
 // Scan for card writers if requested.
 // Otherwise update device selection if it has changed.
 if (array_key_exists('scanwrt', $form_data)) {
-        $state->set_device_list(get_card_devices());
+        $state->set_device_list(get_card_devices($debug));
 } else {
         foreach($state->get_device_list() as $n => $writer) {
-                if (array_key_exists('writer_' . $n, $form_data)) {
+                if (array_key_exists('writer_' . $n, $form_data)
+                        && $writer['status'] == 'ok'
+                ) {
                         $state->select_device($n);
-                } else {
+                } else if ($writer['status'] != 'ok') {
                         $state->unselect_device($n);
                 }
         }

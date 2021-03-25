@@ -56,3 +56,33 @@ tr.mounted td {
 
 tr.ok td {
 }
+
+#progress {
+    width: 100%;
+    height: 3ex;
+    background-color: #fdfdfd;
+    font-size: 180%;
+    font-weight: bolder;
+    border: solid black 0.1ex;
+    border-radius: 1ex;
+}
+
+#progress_bar {
+    display: inline-block;
+    height: 100%;
+    width:99%;
+    padding-right: 0.5ex;
+    background-color: #bcbcfd;
+    border-radius: 1ex;
+    text-align: right;
+}
+
+#status {
+    font-size:120%;
+    font-weight: bold;
+}
+
+#back_button {
+    background-color: #cdcdfd;
+    display: none;
+}

@@ -1,6 +1,6 @@
 [Unit]
 Description=<?=PROGNAME?> state file watcher
-PartOf=<?=PROGNAME?>_writer.service
+PartOf=<?=PROGNAME?>.service
 
 [Path]
 PathModified=<?=MAGIC_WRITE_FILE?>
