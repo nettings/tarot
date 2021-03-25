@@ -4,8 +4,6 @@ define('PROGNAME', 'tarot');
 define('VERSION', '0.0.1');
 define('AUTHORS', 'Jörn Nettingsmeier [nettings@luchtbeweging.nl]');
 define('PROJECT_HOME', 'https://github.com/nettings/tarot');
-define('ROOT', realpath(__DIR__ . '/../'));
-define('DOCROOT', dirname($_SERVER['REQUEST_URI']. '42')); // add arbitrary string in case URI is just a dir
 define('HOST', gethostname());
 
 /**
@@ -20,13 +18,10 @@ define('DEPTH', 4); // parse depth of returned json. only three levels actually 
 define('BLOCKDEVICES', 'blockdevices'); // json subtree element we're interested in
 
 define('STATCMD', "/usr/bin/stat -c '%s'");
-define('IMAGE_PATH', '/local/images');
-define('IMAGE_FILE_SUFFIX', '\.img'); // escape for preg_match!
-define('STATEFILE', IMAGE_PATH . '/tarot_state.txt');
-//define('REFRESH_AFTER_SECS', 86400); // one day
-define('REFRESH_AFTER_SECS', 60);
 define('WRITE_CMD', '/usr/bin/dcfldd');
 
 define('B2GIB', 1.0 / (2.0 ** 30.0));
+
+include(__DIR__ . '/config.php');
 
 ?>
