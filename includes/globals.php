@@ -23,6 +23,8 @@ define('STATCMD', "/usr/bin/stat -c '%s'");
 define('IMAGE_PATH', '/local/images');
 define('IMAGE_FILE_SUFFIX', '\.img'); // escape for preg_match!
 define('STATEFILE', IMAGE_PATH . '/tarot_state.txt');
+//define('REFRESH_AFTER_SECS', 86400); // one day
+define('REFRESH_AFTER_SECS', 60);
 define('WRITE_CMD', '/usr/bin/dcfldd');
 
 define('B2GIB', 1.0 / (2.0 ** 30.0));

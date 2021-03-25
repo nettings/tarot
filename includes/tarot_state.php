@@ -15,7 +15,6 @@ class tarot_state {
 
 	function __construct() {
 		$this->last_changed = 0;
-		$this->devices_last_changed = 0;
 		$this->caller_ip = '';
 		$this->image_list = array();
 		$this->image_selected = -1;
@@ -25,7 +24,7 @@ class tarot_state {
 	}
 
 	private function update() {
-		return $this->last_changed = time();
+		return ($this->last_changed = time());
 	}
 	// recalculate overflow/ok status depending on size of selected image
 	private function update_device_status() {
@@ -47,7 +46,6 @@ class tarot_state {
 	public function is_ready() {
 		return (
 			$this->last_changed
-			&& $this->devices_last_changed
 			&& $this->caller_ip
 			&& $this->image_list
 			&& $this->image_selected > -1
@@ -56,20 +54,23 @@ class tarot_state {
 		);
 	}
 	public function last_changed() { return $this->last_changed; }
-	public function devices_last_changed() { return $this->devices_last_changed; }
+
+	public function get_caller_ip() { return $this->caller_ip; }
 	public function set_caller_ip($ip) {
 		if (filter_var($ip, FILTER_VALIDATE_IP)) {
 			$this->caller_ip = $ip;
 			$this->update();
 		} else return null;
 	}
-	public function get_caller_ip() { return $this->caller_ip; }
+
+	public function get_image_list() { return $this->image_list; }
 	public function set_image_list($image_list = array()) {
 		$this->image_list = $image_list;
 		$this->unselect_image();
 		$this->update();
 	}
-	public function get_image_list() { return $this->image_list; }
+
+	public function get_selected_image() { return $this->image_selected; }
 	public function select_image($index) {
 		if ($index != $this->image_selected) {
 			$this->image_selected = (int) $index;
@@ -82,14 +83,14 @@ class tarot_state {
 			$this->update_device_status();
 		}
 	}
-	public function get_selected_image() { return $this->image_selected; }
+
+	public function get_device_list() { return $this->device_list; }
 	public function set_device_list($device_list = array()) {
 		$this->device_list = $device_list;
 		$this->unselect_all_devices();
-		$this->devices_last_changed = $this->update();
 		if ($this->image_selected > -1) $this->update_device_status();
 	}
-	public function get_device_list() { return $this->device_list; }
+
 	public function device_is_selected($index) {
 		return ($this->devices_selected[(int) $index] === true);
 	}
@@ -111,6 +112,7 @@ class tarot_state {
 			$this->devices_selected[$k] = false;
 		}
 	}
+
 	public function store($location) {
 		$fp = @fopen($location, 'w');
 		if (!$fp) {

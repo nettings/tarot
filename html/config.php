@@ -32,7 +32,7 @@ foreach($state->get_image_list() as $n => $img) {
       </fieldset>
       <fieldset>
 <?php if ($state->get_image_list()) { ?>
-        <input type="submit" name="scanimg" value="Re-scan for images" />
+        <input type="submit" name="scanimg" value="Re-scan for images" title="Last scanned <?=$lastmod?>." />
 <?php } else { ?>
         <input type="submit" name="scanimg" value="Scan for images" />
 <?php } ?>
@@ -78,7 +78,7 @@ foreach($state->get_device_list() as $n => $writer) {
       <fieldset>
 <?php if ($state->get_device_list()) { ?>
         <input type="submit" name="confwrt" value="Confirm selection" />
-        <input type="submit" name="scanwrt" value="Re-scan for writers" />
+        <input type="submit" name="scanwrt" value="Re-scan for writers" title="Last scanned <?=$lastmod?>." />
 <?php } else { ?>
         <input type="submit" name="scanwrt" value="Scan for writers" />
 <?php } ?>
