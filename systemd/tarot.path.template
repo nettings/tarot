@@ -1,0 +1,9 @@
+[Unit]
+Description=<?=PROGNAME?> state file watcher
+PartOf=<?=PROGNAME?>_writer.service
+
+[Path]
+PathModified=<?=MAGIC_WRITE_FILE?>
+
+[Install]
+WantedBy=multi-user-target
