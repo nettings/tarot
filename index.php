@@ -74,7 +74,7 @@ include(HTM . '/header.php');
 if (array_key_exists('write', $form_data)) {
         include(HTM . '/write.php');
 } else {
-        include(HTM . '/config.php');
+        include(HTM . '/main.php');
 }
 include(HTM . '/footer.php');
 
