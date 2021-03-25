@@ -20,7 +20,8 @@ define('BLOCKDEVICES', 'blockdevices'); // json subtree element we're interested
 
 define('STATCMD', "/usr/bin/stat -c '%s'");
 define('WRITE_CMD', '/usr/bin/dcfldd');
-
+define('TRIGGER_WRITE', 'Toast \'em!');
+define('TRIGGER_PARTPROBE', 'Show me what you\'ve got!');
 define('B2GIB', 1.0 / (2.0 ** 30.0));
 
 include(__DIR__ . '/config.php');

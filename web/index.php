@@ -6,6 +6,7 @@ require_once(INC . '/globals.php');
 require(INC . '/card_devices.php');
 require(INC . '/images.php');
 require(INC . '/tarot_state.php');
+require(INC . '/trigger.php');
 require(INC . '/write_cmd.php');
 require(INC . '/util.php');
 
@@ -38,7 +39,6 @@ if (!$state) {
 if ($debug && array_key_exists('fudgeip', $form_data)) {
         $state->set_caller_ip('0.0.0.0');
 }
-
 
 // This web GUI must be a singleton!
 // Check if caller IP is the same that created the session.
@@ -84,7 +84,11 @@ $lastmod = howlongago($state->last_changed());
 include(HTM . '/header.php');
 // Perform write if requested, show config screen otherwise
 if (array_key_exists('write', $form_data)) {
+        trigger_write();
         include(HTM . '/write.php');
+} else if (array_key_exists('partprb', $form_data)) {
+        trigger_partprobe();
+        include(HTM . '/partprobe.php');
 } else {
         include(HTM . '/main.php');
 }

@@ -12,17 +12,45 @@ if (posix_getuid() != 0) {
 	fwrite(STDERR, "Fatal error: " . __FILE__ . " must be run as root.\n");
 	exit(2);
 }
-
+/*
+$fp = @fopen(TRIGGER_FILE, 'r')
+if (!$fp) {
+	fwrite(STDERR, "Fatal error: Could not open trigger file " . TRIGGER_FILE . "\n");
+	exit(3);
+}
+$trigger = @fread($fp, 128);
+if (!$trigger) {
+	fwrite(STDERR, "Fatal error: Could not read trigger file " . TRIGGER_FILE . "\n");
+	exit(3);
+}
+if (!unlink(TRIGGER_FILE)) {
+	fwrite(STDERR, "Error: Could not delete trigger file " . TRIGGER_FILE . "\n");
+}
+*/
 $state = tarot_state::restore(STATE_FILE);
 if (!$state) {
 	fwrite(STDERR, "No tarot_state found at " . STATE_FILE . ".\n");
 	fwrite(STDERR, "Please run web interface first!\n");
-	exit(3);
+	exit(4);
 }
+/*
+switch ($trigger) {
+case TRIGGER_WRITE:
+*/
+	$cmd = make_write_cmd($state);
+	$cmd .= ' 2>&1  | cat > ' . PROGRESS_FILE;
+	print("Executing\n\n $cmd\n\n\n");
+	exec($cmd, $out, $retval);
+/*
+	break;
+case TRIGGER_PARTPROBE:
+	break
+default:
+	fwrite(STDERR, "Fatal error: Unknown trigger $trigger.\n");
+	exit(4);
+}
+*/
 
-$cmd = make_write_cmd($state);
-$cmd .= ' 2>&1  | cat > ' . PROGRESS_FILE;
-print("Executing\n\n $cmd\n\n\n");
-exec($cmd, $out, $retval);
+
 
 ?>

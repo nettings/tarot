@@ -91,7 +91,7 @@ foreach($state->get_device_list() as $n => $writer) {
          <input type="submit" name="write" value="Write !" /><br />
 <?php } ?>
 <?php if ($debug) { ?>
-         <input type="submit" name="parttab" value="Re-read partition table (slow)" /><br />
+         <input type="submit" name="partprb" value="Re-read partition table (slow)" /><br />
          <input type="submit" name="fudgeip" value="Reset session IP (test stealing)" /><br />
 <?php } ?>
          <input type="submit" name="reset" value="Forget session data" /><br />
