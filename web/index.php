@@ -18,7 +18,7 @@ $cmd = '';
 // Restore state unless user requests to forget or steal the session
 if (!(array_key_exists('reset', $form_data)
         || array_key_exists('steal', $form_data))) {
-        $state = tarot_state::restore(STATEFILE);
+        $state = tarot_state::restore(STATE_FILE);
 }
 
 // If there is no state yet, create one.
@@ -66,7 +66,7 @@ if (array_key_exists('scanwrt', $form_data)) {
 }
 
 $cmd = make_write_cmd($state);
-$state->store(STATEFILE);
+$state->store(STATE_FILE);
 $lastmod = howlongago($state->last_changed());
 
 include(HTM . '/header.php');

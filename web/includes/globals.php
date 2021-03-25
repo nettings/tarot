@@ -5,6 +5,7 @@ define('VERSION', '0.0.1');
 define('AUTHORS', 'Jörn Nettingsmeier [nettings@luchtbeweging.nl]');
 define('PROJECT_HOME', 'https://github.com/nettings/tarot');
 define('HOST', gethostname());
+define('DOCROOT', dirname($_SERVER['REQUEST_URI']. '42')); // add arbitrary string in case URI is just a dir
 
 /**
  * The lsblk invocation to list all candidate block devices. 
