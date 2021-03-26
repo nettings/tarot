@@ -83,7 +83,7 @@ if (array_key_exists('scanwrt', $form_data)) {
         }
 }
 
-$cmd = make_write_cmd($state);
+$cmd = get_write_cmd($state);
 $state->store(STATE_FILE);
 $lastmod = howlongago($state->last_changed());
 

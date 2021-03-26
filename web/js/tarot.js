@@ -66,7 +66,7 @@ function updateProgress() {
             if (percent_done < 5)
                 progress_bar.style.width = '5%'
             else if (percent_done > 99)
-                progress_bar.style.width = '99%'
+                progress_bar.style.width = '99.3%'
             else progress_bar.style.width = percent_done + '%';
             status.textContent =
                 'Estimated time remaining: ' + s.time_remaining;
@@ -75,7 +75,7 @@ function updateProgress() {
     var timer = setInterval(function() {
         if (percent_done >= 100) {
             back_button.style.display = 'block';
-            clearInterval(timer);
+            //clearInterval(timer);
             return;
         }
         //console.log(url);
