@@ -67,11 +67,17 @@ if (array_key_exists('scanwrt', $form_data)) {
         $state->set_device_list(get_card_devices($debug));
 } else {
         foreach($state->get_device_list() as $n => $writer) {
+                // selecting a device is straightforward
                 if (array_key_exists('writer_' . $n, $form_data)
                         && $writer['status'] == 'ok'
                 ) {
                         $state->select_device($n);
-                } else if ($writer['status'] != 'ok') {
+                // unselect only if user clicked to confirm
+                // the selection (otherwise we lose selections
+                // when returning from writing etc.), or if the
+                // device is not in state 'ok'.
+                } else if (array_key_exists('confwrt', $form_data)
+                        || $writer['status'] != 'ok') {
                         $state->unselect_device($n);
                 }
         }
