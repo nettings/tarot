@@ -2,11 +2,9 @@
 Description=<?=PROGNAME?> job handler
 After=network-online.target
 Requires=<?=PROGNAME?>.path
+
 [Service]
 Type=oneshot
 User=root
-ExecStart=<$=PREFIX/tarot.php
-
-[Install]
-WantedBy=multi-user.target
+ExecStart=<?=APPROOT?>/bin/tarot_handler
 
