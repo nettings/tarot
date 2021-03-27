@@ -1,7 +1,9 @@
 # tarot
 ![tarot](/web/graphics/tarot.svg) lets you create multiple clones of SD
 cards and other media in parallel, which is nice if you have to deploy
-massive amounts of SBC computers or other embedded gadgets.
+massive amounts of SBC computers or other embedded gadgets. It provides
+a web interface, so the machine running the card writers can be a headless
+SBC such as a Raspberry Pi.
 
 ![Screenshot of main GUI v0.0.2](/doc/screenshot-main-v0.0.2.png)
 
