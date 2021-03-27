@@ -44,7 +44,7 @@ This is due to the fact that the hub consists of several sub-hubs
 internally, which all eat up device slots.
 In the end, I built two Pis with one 13-port hub each, which works fine.
 
-![Two Raspberry 4B-based µSD card copying stations](/docs/rpi4b-sd-copy-stations.jpg)
+![Two Raspberry 4B-based µSD card copying stations](/doc/rpi4b-sd-copy-stations.jpg)
 
 ### Run installer
 All configuration is done in [/web/includes/config.php](/web/includes/config.php). 
