@@ -56,7 +56,7 @@ if ($state->get_caller_ip()
 // Scan for images if requested.
 // Otherwise update image selection if it has changed.
 if (array_key_exists('scanimg', $form_data)) {
-        $state->set_image_list(get_images());
+        $state->set_image_list(get_images($debug));
 } else if (array_key_exists('image', $form_data)) {
         $state->select_image($form_data['image']);
 }

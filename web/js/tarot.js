@@ -37,48 +37,61 @@ function handleSelectImage(event) {
     event.target.form.submit();
 }
 
-
+// look at first script tag, assume it's ours,
+// derive base URL
+function getBaseUrl() {
+        var u = document.getElementsByTagName('script')[0].src;
+        return u.substr(0, u.indexOf('js/'));
+}
 
 function updateProgress() {
-    var progress_bar = document.getElementById('progress_bar');
-    var status = document.getElementById('status');
-    var back_button = document.getElementById('back_button');
-    var percent_done = 0;
-    var time_remaining = 0;
-    var resp;
-    var time_remaining;
-    var u = document.getElementsByTagName('script')[0].src;
-    var url = u.substr(0, u.indexOf('js/')) + 'progress.php';
+    var pbar = document.getElementById('progress_bar');
+    var stat = document.getElementById('status');
+    var bbtn = document.getElementById('back_button');
+    var trmn = document.getElementById('time_remaining');
+    var url = getBaseUrl() + 'progress.php';
+    var done = false;
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState == 4 && req.status == 200) {
             var s;
             try {
                 s = (JSON.parse(req.responseText));
-                //console.log('We got: ' + req.responseText);
-                percent_done = s.percent_done;
-                time_remaining = s. time_remaining;
-            } catch (err) {
+            }
+            catch (err) {
                 console.log(err.message + ' while parsing JSON from ' + s);
                 return;
             }
-            progress_bar.textContent = percent_done + '%';
-            if (percent_done < 5)
-                progress_bar.style.width = '5%'
-            else if (percent_done > 99)
-                progress_bar.style.width = '99.3%'
-            else progress_bar.style.width = percent_done + '%';
-            status.textContent =
-                'Estimated time remaining: ' + s.time_remaining;
+            pbar.textContent = s.percent_done + '%';
+            if (s.percent_done < 5) {
+                pbar.style.width = '5%'
+            } else if (s.percent_done > 99) {
+                pbar.style.width = '99.3%'
+                done = true;
+            } else {
+                pbar.style.width = s.percent_done + '%';
+            }
+            stat.textContent =
+                'Written ' + s.data_done + ' of ' + s.data_total + 'MB.';
+            trmn.textContent =
+                'Estimated time remaining: '
+                + ((s.hours_remaining) ? s.hours_remaining.toString() + ' hours, ' : '')
+                + ((s.hours_remaining || s.minutes_remaining) ? s.minutes_remaining.toString().padStart(2, ' ') + ' minutes, ' : '')
+                + s.seconds_remaining.toString().padStart(3, ' ') + ' seconds.';
+        } else if (req.status == 204) {
+            pbar.textContent = '';
+            pbar.style.width = '99.3%'
+            stat.textContent = 'No write in progress';
+            trmn.textContent = '';
+            done = true;
         }
     }
     var timer = setInterval(function() {
-        if (percent_done >= 100) {
-            back_button.style.display = 'block';
-            //clearInterval(timer);
+        if (done) {
+            bbtn.style.display = 'block';
+            clearInterval(timer);
             return;
         }
-        //console.log(url);
         req.open("GET", url, true);
         req.send();
     }, 1000);

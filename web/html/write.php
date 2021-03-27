@@ -12,6 +12,9 @@
       <p id="status">
         Waiting for progress data...
       </p>
+      <p id="time_remaining">
+        &#160;
+      </p>
     </div>
   </div>
   <div class="two columns">

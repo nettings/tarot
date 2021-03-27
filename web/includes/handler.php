@@ -31,7 +31,6 @@ function get_trigger() {
 		exit(3);
 	}
 	fclose($fp);
-	delete(TRIGGER_FILE);
 	return $trigger;
 }
 
@@ -47,7 +46,7 @@ function get_state() {
 
 function write($state) {
 	$cmd = get_write_cmd($state);
-	$cmd .= '  2>&1  | cat > ' . PROGRESS_FILE;
+	$cmd .= '  2>&1 | cat > ' . PROGRESS_FILE;
 	print("Executing $cmd\n");
 	exec($cmd, $out, $retval);
 	return $retval;

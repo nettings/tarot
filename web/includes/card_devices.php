@@ -7,7 +7,7 @@ require_once(__DIR__ . '/globals.php');
  */
 function get_block_devices() {
 	$devices = json_decode(
-		shell_exec(LSBLKCMD), 
+		shell_exec(LSBLK_CMD),
 		null, 
 		DEPTH, 
 		JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR
@@ -83,7 +83,7 @@ function get_card_devices($debug) {
 		unset($d);
 		$d['status'] = 'ok';
 		$d['path'] = '/dev/null';
-		$d['size'] = '137438953472';
+		$d['size'] = '1099511627776';
 		$carddevs[] = $d;
 	}
 	return $carddevs;

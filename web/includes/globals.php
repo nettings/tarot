@@ -14,14 +14,15 @@ define('HOST', gethostname());
  * array of devices returned by get_block_devices() and
  * get_card_devices()
  */
-define('LSBLKCMD', '/usr/bin/lsblk --json --bytes --output PATH,TYPE,MODEL,SERIAL,HOTPLUG,SIZE,MOUNTPOINT,RO');
+define('LSBLK_CMD', '/usr/bin/lsblk --json --bytes --output PATH,TYPE,MODEL,SERIAL,HOTPLUG,SIZE,MOUNTPOINT,RO');
 define('DEPTH', 4); // parse depth of returned json. only three levels actually used
 define('BLOCKDEVICES', 'blockdevices'); // json subtree element we're interested in
 
-define('STATCMD', "/usr/bin/stat -c '%s'");
+define('STAT_CMD', "/usr/bin/stat -c '%s'");
 define('WRITE_CMD', '/usr/bin/dcfldd');
 define('TRIGGER_WRITE', 'Toast \'em!');
 define('TRIGGER_PARTPROBE', 'Show me what you\'ve got!');
+define('STALE_PROGRESS_TIMEOUT_SECS', 30);
 define('B2GIB', 1.0 / (2.0 ** 30.0));
 
 include(__DIR__ . '/config.php');

@@ -7,7 +7,7 @@ require_once(__DIR__ . '/globals.php');
  *
  * @returns		An array of image file names.
  */
-function get_images() {
+function get_images($debug) {
 	$dir = scandir(IMAGE_PATH);
 	$images = array();
 	$n = 0;
@@ -17,6 +17,10 @@ function get_images() {
 			$images[$n]['size'] = shell_exec(STATCMD . ' ' .escapeshellarg(IMAGE_PATH . '/' . $file));
 			$n++;
 		}
+	}
+	if ($debug) {
+		$images[$n]['name'] = 'zero';
+		$images[$n]['size'] = 0;
 	}
 	return $images;
 }

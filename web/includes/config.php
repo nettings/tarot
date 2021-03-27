@@ -1,7 +1,7 @@
 <?php
 
 define('PREFIX', '/usr/local');
-define('DESTDIR', '/');
+define('DESTDIR', '');
 define('WEBROOT', '/var/www/html');
 define('APPROOT', WEBROOT . '/tarot');
 define('WEBUSER', 'www-data');
