@@ -47,7 +47,7 @@ In the end, I built two Pis with one 13-port hub each, which works fine.
 ![Two Raspberry 4B-based µSD card copying stations](/doc/rpi4b-sd-copy-stations.jpg)
 
 ### Run installer
-All configuration is done in [/web/includes/config.php](/web/includes/config.php). 
+All configuration is done in [web/includes/config.php](/web/includes/config.php). 
 Change as required.
 
 There is an install script that should work, and if it doesn't in your case, 
@@ -98,23 +98,28 @@ global state object on the server.
 Also, since the actual writing has to be done as `root`, the web environment
 will only dump a magic trigger file to disk. The birth of this file is then
 picked up by a systemd `tarot.path` unit, which in turn activates
-`tarot.service`. It triggers a local handler process that has root rights.
+`tarot.service`. It triggers a local process
+[web/bin/tarot_handler](/web/bin/tarot_handler) that runs with root
+privileges.
 This handler reads the user's choices from the state object and gets to
 work. After it terminates, systemd will clear the magic trigger file.
 
 So while Eve could nuke all of Alice's hotplugged but unused devices easily,
-she will not be able to attack other devices.
+she will not be able to attack other storage. There is no real attack
+surface for privilege escalation.
 
 ### Debug mode
-You can pass ?debug to the URL to enable some debugging feature:
+You can pass `?debug` to the URL to enable some debugging features:
 * `/dev/zero` will be made available as an "image"
 * `/dev/null` will be made available as a card device for dry-run testing
-* a button to reset the session IP is added, to test session stealing
+* a button to reset the session IP, to test session stealing
 * a button to forget the session state and start over
 
 ### TODO
 * add verifcation of images after writing.
-* add feature to trigger a partprobe if lsblk fails to find new devices
+* implement partprobe if lsblk fails to find new devices
+* implement uploading of new images (and here comes the attack surface for
+privilege escalation)
 
 ### Kudos
 
