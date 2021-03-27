@@ -31,6 +31,14 @@ function trigger($what) {
 	}
 }
 
+function is_triggered() {
+	if (!file_exists(TRIGGER_FILE)) return false;
+	$s = file_get_contents(TRIGGER_FILE);
+	if (!$s) error_log("Could not read " . TRIGGER_FILE
+			. __FILE__ . " on line " . __LINE__);
+	return $s;
+}
+
 function trigger_write() {
 	trigger(TRIGGER_WRITE);
 }

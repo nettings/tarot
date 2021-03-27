@@ -15,6 +15,7 @@ $form_data = $_POST;
 $state = null;
 $lastmod = 0;
 $cmd = '';
+$triggered = is_triggered();
 
 $debug = array_key_exists('debug', $_GET)
         || array_key_exists('DEBUG', $_GET)
@@ -88,14 +89,26 @@ $state->store(STATE_FILE);
 $lastmod = howlongago($state->last_changed());
 
 include(HTM . '/header.php');
-// Perform write if requested, show config screen otherwise
+// If a write job has already been triggered, go to write screen:
+if ($triggered == TRIGGER_WRITE) {
+        include(HTM . '/write.php');
+} else
+// If a partprobe job has already been triggered, go to partprobe screen:
+if ($triggered == TRIGGER_PARTPROBE) {
+        include(HTM . '/partprobe.php');
+} else
+// Trigger write if requested and go to write screen:
 if (array_key_exists('write', $form_data)) {
         trigger_write();
         include(HTM . '/write.php');
-} else if (array_key_exists('partprb', $form_data)) {
+} else
+// Trigger partprobe if requested and go to partprobe screen:
+if (array_key_exists('partprb', $form_data)) {
         trigger_partprobe();
         include(HTM . '/partprobe.php');
-} else {
+} else
+// go to main screen:
+{
         include(HTM . '/main.php');
 }
 include(HTM . '/footer.php');
