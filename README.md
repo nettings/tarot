@@ -2,7 +2,7 @@
 ![tarot](/web/graphics/tarot.svg) lets you create multiple clones of SD
 cards and other media in parallel.
 
-# Status
+## Status
 **tarot** is functional but not very well tested yet, and not at all outside
 of a RaspiOS environment. Buyer beware.
 
@@ -10,34 +10,35 @@ of a RaspiOS environment. Buyer beware.
 important system or on a system with important data devices connected to
 it.**
 
-# Software requirements
+## Installation
+### Software requirements
 You will need systemd, dcfldd, lsblk and a web server environment with PHP.
 
 The systemd requirement could be replaced by an inotify handler if you're
 so inclined. I like systemd.
 
-# Hardware requirements
+### Hardware requirements
 **tarot** is being tested and developed on a Raspberry Pi 4B and a 13-way IcyBox
 USB3 hub containing 13 Transcend SD and µSD card reader/writers.
 
 It is quite Linux-specific, but should should run on any distribution on any
 platform.
 
-# Installation
+### Run installer
 All configuration is done in [/web/includes/config.php](/web/includes/config.php). 
 Change as required.
 
 There is an install script that should work, and if it doesn't in your case, 
 reading it will tell you what to do.
 
-# Usage
+## Usage
 After installing, point your browser at `http://yourhost.net/tarot`. You
 will be asked to scan for image files in the image folder you selected, and
 to scan for devices. Having selected exactly one image and one or more
 devices, you can proceed to write the image to the device(s), which will
 happen in parallel using `dcfldd`.
 
-# Design and development
+### Design and development
 **tarot** tries very hard to prevent you from accidentally nuking your important
 data partitions while detecting useful devices on-the-fly without manual
 configuration. It does this by running `lsblk` over all devices and
@@ -75,11 +76,11 @@ You can pass ?debug to the URL to enable some debugging feature:
 * '/dev/null' will be made available as a card device for dry-run testing
 * A button to reset the session IP is added, to test session stealing.
 
-# TODO
+#### TODO
 * add verifcation of images after writing.
 * add feature to trigger a partprobe if lsblk fails to find new devices
 
-# Kudos
+#### Kudos
 
 tarot has been inspired by [Aaron Nguyen's
 osid-python3](https://github.com/aaronnguyen/osid-python3), which in turn
