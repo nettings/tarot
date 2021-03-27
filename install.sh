@@ -24,6 +24,15 @@ function install_webapp {
 	echo cp -av "$THISPATH"/web "$APPROOT"
 }
 
+function create_statedir {
+	mkdir "$STATE_PATH"
+	chown -R "$WEBUSER":"$WEBGROUP" "$STATE_PATH"
+}
+
+function install_zeroimg {
+	echo ln -s /dev/zero "$IMAGE_PATH"
+}
+
 PREFIX=${PREFIX:-$(parse_config PREFIX)}
 DESTDIR=${DESTDIR:-$(parse_config DESTDIR)}
 
@@ -31,23 +40,26 @@ PROGNAME=${PROGNAME:-$(parse_config PROGNAME)}
 APPROOT=${APPROOT:-$(parse_config APPROOT)}
 STATE_PATH=${STATE_PATH:-$(parse_config STATE_PATH)}
 IMAGE_PATH=${IMAGE_PATH:-$(parse_config IMAGE_PATH)}
+WEBUSER=${WEBUSER:-$(parse_config WEBUSER)}
+WEBGROUP=${WEBGROUP:-$(parse_config WEBGROUP)}
 
 cat << EOF
 $PROGNAME installer
 
-Installation prefix:   $PREFIX  (override by setting \$PREFIX)
-Destination directory: $DESTDIR (override by setting \$DESTDIR)
+Installation prefix:   '$PREFIX'  (override by setting \$PREFIX)
+Destination directory: '$DESTDIR' (override by setting \$DESTDIR)
 
 Configuration (set in $THISPATH/web/include/config.php):
-Web Application root:  $APPROOT
-State file directory:  $STATE_PATH
-Image directory:       $IMAGE_PATH
+Web Application root:  '$APPROOT'
+State file directory:  '$STATE_PATH'
+Image directory:       '$IMAGE_PATH'
 EOF
 
-exit
-
-
 install_services
+install_zeroimg
+install_webapp
+create_statedir
 
-systemctl start tarot.path
+systemctl enable tarot.path
+systemctl restart tarot.path
 
