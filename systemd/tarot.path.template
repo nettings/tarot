@@ -4,5 +4,6 @@ Description=<?=PROGNAME?> state file watcher
 [Path]
 PathExists=<?=TRIGGER_FILE?>
 
+
 [Install]
-WantedBy=multi-user-target
+WantedBy=multi-user.target

@@ -7,4 +7,4 @@ Requires=<?=PROGNAME?>.path
 Type=oneshot
 User=root
 ExecStart=<?=APPROOT?>/bin/tarot_handler
-
+ExecStartPost=/usr/bin/rm -f "<?=TRIGGER_FILE?>"
