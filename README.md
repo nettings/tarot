@@ -24,7 +24,8 @@ It is quite Linux-specific, but should should run on any distribution on any
 platform.
 
 # Installation
-All configuration is done in [/web/includes/config.php]. Change as required.
+All configuration is done in [/web/includes/config.php](/web/includes/config.php). 
+Change as required.
 
 There is an install script that should work, and if it doesn't in your case, 
 reading it will tell you what to do.
