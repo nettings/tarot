@@ -1,6 +1,7 @@
 # tarot
 ![tarot](/web/graphics/tarot.svg) lets you create multiple clones of SD
-cards and other media in parallel.
+cards and other media in parallel, which is nice if you have to deploy
+massive amounts of SBC computers or other embedded gadgets.
 
 ## Status
 **tarot** is functional but not very well tested yet, and not at all outside
@@ -15,9 +16,9 @@ of a RaspiOS environment. Buyer beware.
 You will need:
 * systemd (this is the default init system on RaspiOS)
 * [dcfldd](http://dcfldd.sourceforge.net/) (it's ancient, but still lovingly
-maintained in Debian
+maintained in Debian)
 * lsblk (which is part of util-linux and available pretty much everywhere)
-* a web server environment with PHP (I'm using lighttpd).
+* a web server environment with PHP enabled (I'm using lighttpd.)
 
 The systemd requirement could be replaced by an inotify handler if you're
 so inclined. I like systemd.
@@ -64,7 +65,7 @@ should be redirected to the appropriate screen.
 Note that scanning does not happen automatically, because it would
 invalidate the selections you may have made before.
 
-### Design and development
+## Design and development
 **tarot** tries very hard to prevent you from accidentally nuking your
 important data partitions while detecting useful devices on-the-fly without
 manual configuration. It does this by running `lsblk` over all devices and
@@ -72,12 +73,18 @@ partitions, and parsing candidate devices into a backend state object, if and
 only if:
 * the device is not mounted
 * none of its partitions are mounted
-* is is not marked read-only
-* is is marked as hot-pluggable
+* it is not marked read-only
+* it is marked as hot-pluggable
 
-As you select or change images, it  will also try to ensure that you will
-attempt to write only to devices big enough to hold the selected image.
+As you select or change images, it  will also try to prevent you from 
+writing to devices too small to hold the selected image and dynamically
+unselect devices if necessary. They will not be re-selected when you switch
+back to a smaller image.
 
+Tarot is single user and will try to ensure that only one IP ever accesses
+it, although it allows for explicit session stealing.
+
+### Security
 While you should only use tarot in a secure environment (don't want to
 expose dd to the world, do we?), it tries to be reasonably secure against
 tampering: the only state data that is ever accepted from the web client is
@@ -94,20 +101,18 @@ work. After it terminates, systemd will clear the magic trigger file.
 So while Eve could nuke all of Alice's hotplugged but unused devices easily,
 she will not be able to attack other devices.
 
-Tarot is single user and will try to ensure that only one IP ever accesses
-it, although it allows for explicit session stealing.
-
+### Debug mode
 You can pass ?debug to the URL to enable some debugging feature:
 * `/dev/zero` will be made available as an "image"
 * `/dev/null` will be made available as a card device for dry-run testing
 * a button to reset the session IP is added, to test session stealing
 * a button to forget the session state and start over
 
-#### TODO
+### TODO
 * add verifcation of images after writing.
 * add feature to trigger a partprobe if lsblk fails to find new devices
 
-#### Kudos
+### Kudos
 
 tarot has been inspired by [Aaron Nguyen's
 osid-python3](https://github.com/aaronnguyen/osid-python3), which in turn
