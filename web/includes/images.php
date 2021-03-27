@@ -14,7 +14,7 @@ function get_images($debug) {
 	foreach($dir as $file) {
 		if (preg_match('/.*' . IMAGE_FILE_SUFFIX . '$/', $file)) {
 			$images[$n]['name'] = $file;
-			$images[$n]['size'] = shell_exec(STATCMD . ' ' .escapeshellarg(IMAGE_PATH . '/' . $file));
+			$images[$n]['size'] = shell_exec(STAT_CMD . ' ' .escapeshellarg(IMAGE_PATH . '/' . $file));
 			$n++;
 		}
 	}
