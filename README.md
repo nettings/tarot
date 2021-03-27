@@ -1,43 +1,43 @@
 # tarot
-A block device duplicator with web frontend, to help you create multiple clones of SD cards and other media in parallel.
+![tarot](/web/graphics/tarot.svg) lets you create multiple clones of SD
+cards and other media in parallel.
 
 # Status
-*tarot* is functional but not very well tested yet, and not at all outside
+**tarot** is functional but not very well tested yet, and not at all outside
 of a RaspiOS environment. Buyer beware.
 
 **Specifically, since tarot writes data to raw devices, do not use it on an
 important system or on a system with important data devices connected to
 it.**
 
-
 # Software requirements
-*tarot* requires systemd, dcfldd, lsblk and a web server environment with PHP.
+You will need systemd, dcfldd, lsblk and a web server environment with PHP.
 
 The systemd requirement could be replaced by an inotify handler if you're
 so inclined. I like systemd.
 
 # Hardware requirements
-*tarot* is being tested and developed on a Raspberry Pi 4B and a 13-way IcyBox
+**tarot** is being tested and developed on a Raspberry Pi 4B and a 13-way IcyBox
 USB3 hub containing 13 Transcend SD and µSD card reader/writers.
 
 It is quite Linux-specific, but should should run on any distribution on any
 platform.
 
 # Installation
-All configuration is done in web/includes/config.php. Change as required.
+All configuration is done in [/web/includes/config.php]. Change as required.
 
 There is an install script that should work, and if it doesn't in your case, 
 reading it will tell you what to do.
 
 # Usage
-After installing, point your browser at http://**yourhost.net**/tarot. You
+After installing, point your browser at `http://yourhost.net/tarot`. You
 will be asked to scan for image files in the image folder you selected, and
 to scan for devices. Having selected exactly one image and one or more
 devices, you can proceed to write the image to the device(s), which will
 happen in parallel using `dcfldd`.
 
 # Design and development
-tarot tries very hard to prevent you from accidentally nuking your important
+**tarot** tries very hard to prevent you from accidentally nuking your important
 data partitions while detecting useful devices on-the-fly without manual
 configuration. It does this by running `lsblk` over all devices and
 partitions, and parsing the devices into a backend state object, if and only
@@ -55,6 +55,14 @@ expose dd to the world, do we?), it tries to be reasonably secure against
 tampering: the only state that is ever accepted from the web client are
 "selected/unselected". The corresponding lists are created and stored in a
 global state object on the server.
+
+Also, since the actual writing has to be done as `root`, the web environment
+will only dump a magic trigger file to disk. The birth of this file is then
+picked up by a systemd `tarot.path` unit, which in turn activates
+`tarot.service`. It triggers a local handler process that has root rights.
+This handler reads the user's choices from the state object and gets to
+work. After it terminates, systemd will clear the magic trigger file.
+
 So while Eve could nuke all of Alice's hotplugged but unused devices easily,
 she will not be able to attack other devices.
 
