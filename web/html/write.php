@@ -5,6 +5,20 @@
 </div>
 <div class="row">
   <div class="ten columns">
+    <p id="job_info">
+      Selected image:
+<?php
+print('  ' . $state->get_image_list()[$state->get_selected_image()]['name']);
+?>
+      <br />
+      Target devices:
+<?php
+foreach($state->get_device_list() as $n => $device) {
+        if ($state->device_is_selected($n))
+              print('  ' . $device['path']);
+}
+?>
+    </p>
     <div id="progress_bg">
       <div id="progress">
         <div id="progress_bar">0%</div>
@@ -13,7 +27,7 @@
         Waiting for progress data...
       </p>
       <p id="time_remaining">
-        &#160;
+        No stats available.
       </p>
     </div>
   </div>
