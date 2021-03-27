@@ -23,7 +23,4 @@ default:
 	fwrite(STDERR, "Fatal error: Unknown trigger $trigger.\n");
 	exit(4);
 }
-
-delete(PROGRESS_FILE);
-
 ?>
