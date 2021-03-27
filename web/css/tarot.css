@@ -65,6 +65,7 @@ tr.ok td {
     font-weight: bolder;
     border: solid black 0.1ex;
     border-radius: 1ex;
+    margin-bottom: 1ex;
 }
 
 #progress_bar {

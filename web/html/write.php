@@ -1,10 +1,6 @@
 <div class="row">
   <div class="twelve columns">
     <h3>Writing...</h3>
-  </div>
-</div>
-<div class="row">
-  <div class="ten columns">
     <p id="job_info">
       Selected image:
 <?php
@@ -19,6 +15,10 @@ foreach($state->get_device_list() as $n => $device) {
 }
 ?>
     </p>
+  </div>
+</div>
+<div class="row">
+  <div class="ten columns">
     <div id="progress_bg">
       <div id="progress">
         <div id="progress_bar">0%</div>
