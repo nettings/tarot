@@ -5,7 +5,8 @@ require(__DIR__ . '/../includes/handler.php');
 
 /* tarot_handler is called by the systemd unit tarot.path when the trigger
  * file appears. The trigger file is exclusively created by the web UI, and
- *  only read (and deleted after processing) by this handler.
+ * only read by this handler.
+ * systemd is then responsible to clear the trigger file after completion.
  */
 
 check_root();
