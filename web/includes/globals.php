@@ -1,7 +1,7 @@
 <?php
 
 define('PROGNAME', 'tarot');
-define('VERSION', '0.0.1');
+define('VERSION', '0.0.2');
 define('AUTHORS', 'Jörn Nettingsmeier [nettings@luchtbeweging.nl]');
 define('PROJECT_HOME', 'https://github.com/nettings/tarot');
 define('HOST', gethostname());
