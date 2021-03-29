@@ -1,3 +1,7 @@
+div.container {
+    max-width: 1100px;
+}
+
 div.header {
     text-align: center;
     background-color: #fdfdfd;
