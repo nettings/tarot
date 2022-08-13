@@ -21,8 +21,10 @@ function install_services {
 
 
 function install_webapp {
-	echo cp -av "$THISPATH"/web "$APPROOT"
+	mkdir "$APPROOT"
+	cp -av "$THISPATH"/web/* "$APPROOT"
 }
+
 
 function create_statedir {
 	mkdir "$STATE_PATH"
@@ -30,8 +32,9 @@ function create_statedir {
 }
 
 function install_zeroimg {
-	echo ln -s /dev/zero "$IMAGE_PATH"
+	ln -s /dev/zero "$IMAGE_PATH"
 }
+
 
 PREFIX=${PREFIX:-$(parse_config PREFIX)}
 DESTDIR=${DESTDIR:-$(parse_config DESTDIR)}

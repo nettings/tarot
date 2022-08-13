@@ -52,6 +52,9 @@ In the end, I built two Pis with one 13-port hub each, which works fine.
 All configuration is done in [web/includes/config.php](/web/includes/config.php). 
 Change as required.
 
+You will need to run `git submodule init ; git submodule update` after
+checkout to fetch skeleton.
+
 There is an install script that should work, and if it doesn't in your case, 
 reading it will tell you what to do.
 Kindly open an issue if you run into one.
@@ -61,7 +64,7 @@ the config file, and the person with the hammer will use PHP for that in a
 PHP project.
 
 ## Usage
-After installing, point your browser at `http://*yourhost.net*/tarot`. You
+After installing, point your browser at `http(s)://*yourhost.net*/tarot`. You
 will be asked to scan for image files in the image folder you selected, and
 to scan for devices. Having selected exactly one image and one or more
 devices, you can proceed to write the image to the device(s).
