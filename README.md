@@ -46,6 +46,9 @@ This is due to the fact that the hub consists of several sub-hubs
 internally, which all eat up device slots.
 In the end, I built two Pis with one 13-port hub each, which works fine.
 
+> Update: The Pi5 has one USB3 controller for each of its blue ports, so it
+> should be possible to run two hubs there, for twice the amount of ports.
+
 ![Two Raspberry 4B-based µSD card copying stations](/doc/rpi4b-sd-copy-stations.jpg)
 
 ### Run installer
