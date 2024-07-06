@@ -32,7 +32,7 @@ function create_statedir {
 }
 
 function install_zeroimg {
-	ln -s /dev/zero "$IMAGE_PATH"
+	ln -s /dev/zero "$IMAGE_PATH"/zero
 }
 
 
