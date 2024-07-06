@@ -56,6 +56,7 @@ foreach($state->get_image_list() as $n => $img) {
 $size = @$state->get_image_list()[$state->get_selected_image()]['size'];
 foreach($state->get_device_list() as $n => $writer) {
         if ($writer['status'] == 'mounted' && !$debug) continue;
+        if ($writer['status'] == 'no_card' && !$debug) continue;
         $w = $writer['path'];
         $s = sprintf('%1.3f', ((float)$writer['size'] *B2GIB));
         $f = $writer['status'];

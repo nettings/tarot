@@ -58,7 +58,7 @@ tr.overflow,tr.ro td {
     color: #800;
 }
 
-tr.mounted td {
+tr.mounted,tr.no_card td {
     text-decoration: line-through;
 }
 

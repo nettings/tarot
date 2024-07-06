@@ -50,6 +50,7 @@ function pick_block_devices($device_list, &$disks, &$partitions) {
  *   <li>It does not have the read-only flag set.</li>
  *   <li>It is not mounted.</li>
  *   <li>None of its partitions are mounted.</li>
+*    <li>
  * </ul>
  *
  * @returns		An associative array of card devices.
@@ -77,6 +78,7 @@ function get_card_devices($debug) {
 			}
 		}
 		if ($d['ro']) $d['status'] = 'read-only';
+		if ($d['size'] == 0) $d['status'] = 'no_card';
 		$carddevs[] = $d;
 	}
 	if ($debug) {
