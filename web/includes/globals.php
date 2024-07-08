@@ -1,8 +1,8 @@
 <?php
 
 define('PROGNAME', 'tarot');
-define('VERSION', '0.0.2');
-define('AUTHORS', 'Jörn Nettingsmeier [nettings@luchtbeweging.nl]');
+define('VERSION', '0.0.3');
+define('AUTHORS', 'Jörn Nettingsmeier (nettings@luchtbeweging.nl)');
 define('PROJECT_HOME', 'https://github.com/nettings/tarot');
 define('HOST', gethostname());
 @define('DOCROOT', dirname($_SERVER['REQUEST_URI']. '42')); // add arbitrary string in case URI is just a dir
