@@ -1,5 +1,5 @@
 <?php 
-require_once(__DIR__ . '/../includes/globals.php');
+
 require(__DIR__ . '/../includes/tarot_state.php');
 require(__DIR__ . '/../includes/write_cmd.php');
 

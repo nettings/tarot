@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/globals.php');
-
 /**
  /  writes a magic trigger file that is acted upon by
  * a systemd path unit.

@@ -1,8 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/globals.php');
-
-
 class tarot_state {
 
 	private $last_changed;

@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/globals.php');
-
 function get_dcfldd_cmd($state) {
 	$img = $state->get_image_list()[$state->get_selected_image()]['name'];
 	$devices = $state->get_device_list();

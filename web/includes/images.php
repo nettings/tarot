@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/globals.php');
-
 /**
  * get a list of suitable image files in IMAGE_PATH 
  *
