@@ -7,4 +7,4 @@ Requires=<?=PROGNAME?>.path
 Type=oneshot
 User=root
 ExecStart=/usr/bin/php '<?=APPROOT?>/bin/tarot_handler.php'
-ExecStartPost=/usr/bin/rm -f '<?=TRIGGER_FILE?>'
+#ExecStartPost=-/usr/bin/rm -f '<?=TRIGGER_FILE?>'
