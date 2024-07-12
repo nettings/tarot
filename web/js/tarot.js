@@ -62,17 +62,18 @@ function updateProgress() {
                 console.log(err.message + ' while parsing JSON from ' + s);
                 return;
             }
-            pbar.textContent = s.percent_done + '%';
-            if (s.percent_done < 5) {
-                pbar.style.width = '5%'
-            } else if (s.percent_done > 99) {
-                pbar.style.width = '99.3%'
+            pbar.textContent = s.percent_done + '%\u00A0';
+            if (s.percent_done < 10) {
+                pbar.style.width = '10%'
+            } else if (s.percent_done > 99.9) {
+                pbar.style.width = '100%'
                 done = true;
             } else {
-                pbar.style.width = s.percent_done + '%';
+//                pbar.style.width = s.percent_done + '%';
+                pbar.style.width = ( s.data_done / s.data_total * 100 ) + '%';
             }
             stat.textContent =
-                'Written ' + s.data_done + ' of ' + s.data_total + 'MB.';
+                'Wrote ' + s.data_done + ' of ' + s.data_total + 'MB.';
             trmn.textContent =
                 'Estimated time remaining: '
                 + ((s.hours_remaining) ? s.hours_remaining.toString() + ' hours, ' : '')
@@ -80,7 +81,7 @@ function updateProgress() {
                 + s.seconds_remaining.toString().padStart(3, ' ') + ' seconds.';
         } else if (req.status == 204) {
             pbar.textContent = '';
-            pbar.style.width = '99.3%'
+            pbar.style.width = '100%'
             stat.textContent = 'No write in progress';
             trmn.textContent = '';
             done = true;
@@ -94,5 +95,5 @@ function updateProgress() {
         }
         req.open("GET", url, true);
         req.send();
-    }, 1000);
+    }, 500);
 }

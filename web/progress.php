@@ -16,7 +16,7 @@ if (!$fp || $expired) {
 
     // The dcfldd stats are self-overwriting on a single line,
     // which gives us a royal mess of carriage returns (not only
-    // at the end of the line, so splitting on those gives pretty
+    // at the end of the line), so splitting on those gives pretty
     // random results.
     // Eliminate all control codes:
     $raw = preg_replace('/[[:cntrl:]]/', '', fread($fp, 128));
